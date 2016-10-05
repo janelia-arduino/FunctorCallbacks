@@ -1,19 +1,19 @@
 // ----------------------------------------------------------------------------
-// FunctorIsr.cpp
+// FunctorCallbacks.cpp
 //
 //
 // Authors:
 // Peter Polidoro polidorop@janelia.hhmi.org
 // ----------------------------------------------------------------------------
-#include "FunctorIsr.h"
+#include "FunctorCallbacks.h"
 
 
-void FunctorIsr::setup()
+void FunctorCallbacks::setup()
 {
   event_array_.fill(Event());
   removeAllEvents();
   startTimer();
 }
 
-FunctorIsr functor_isr;
+FunctorCallbacks functor_isr;
 

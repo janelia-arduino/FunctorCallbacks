@@ -1,12 +1,12 @@
 // ----------------------------------------------------------------------------
-// FunctorIsr.h
+// FunctorCallbacks.h
 //
 //
 // Authors:
 // Peter Polidoro polidorop@janelia.hhmi.org
 // ----------------------------------------------------------------------------
-#ifndef FUNCTOR_ISR_H
-#define FUNCTOR_ISR_H
+#ifndef FUNCTOR_CALLBACKS_H
+#define FUNCTOR_CALLBACKS_H
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
@@ -17,9 +17,9 @@
 #include "Streaming.h"
 
 
-enum{FUNCTOR_ISR_COUNT_MAX=10};
+enum{FUNCTOR_CALLBACKS_COUNT_MAX=10};
 
-class FunctorIsr
+class FunctorCallbacks
 {
 public:
   void attachCallback(const Functor0 & callback);
@@ -28,6 +28,6 @@ private:
   Functor0 callback_;
 };
 
-extern FunctorIsr g_functor_isr;
+extern FunctorCallbacks g_functor_callbacks;
 
 #endif
