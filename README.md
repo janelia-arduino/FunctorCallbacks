@@ -8,6 +8,8 @@ License:
 
     BSD
 
+Convert functors to function pointers so object methods can be called
+from interrupts.
 
 [Usage Examples](./examples)
 
