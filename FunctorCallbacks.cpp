@@ -8,6 +8,15 @@
 #include "FunctorCallbacks.h"
 
 
+FunctorCallback::FunctorCallback()
+{
+}
+
+FunctorCallback::FunctorCallback(const Functor0 & callback)
+{
+  attachCallback(callback);
+}
+
 void FunctorCallback::attachCallback(const Functor0 & callback)
 {
   callback_ = callback;
@@ -26,51 +35,170 @@ boolean FunctorCallback::callbackIsAttached()
   return callback_;
 }
 
-FunctorCallbacks::FunctorCallbacks()
-{
-  functor_callbacks_.fill(FunctorCallback());
-}
+IndexedContainer<FunctorCallback,FUNCTOR_CALLBACKS_COUNT> FunctorCallbacks::functor_callbacks_;
 
-void FunctorCallbacks::attachCallback(const size_t index, const Functor0 & callback)
+Callback FunctorCallbacks::add(const Functor0 & callback)
 {
-  if (index >= FUNCTOR_CALLBACKS_COUNT)
+  if (full())
   {
-    return;
+    return NULL;
   }
-  functor_callbacks_[index].attachCallback(callback);
-}
-
-void FunctorCallbacks::detachCallback(const size_t index)
-{
-  if (index >= FUNCTOR_CALLBACKS_COUNT)
+  FunctorCallback functor_callback(callback);
+  int index = functor_callbacks_.add(functor_callback);
+  if (index == 0)
   {
-    return;
+    return functorCallback0;
   }
-  functor_callbacks_[index] = FunctorCallback();
+  else if (index == 1)
+  {
+    return functorCallback1;
+  }
+  else if (index == 2)
+  {
+    return functorCallback2;
+  }
+  else if (index == 3)
+  {
+    return functorCallback3;
+  }
+  else if (index == 4)
+  {
+    return functorCallback4;
+  }
+  else if (index == 5)
+  {
+    return functorCallback5;
+  }
+  else if (index == 6)
+  {
+    return functorCallback6;
+  }
+  else if (index == 7)
+  {
+    return functorCallback7;
+  }
+  else if (index == 8)
+  {
+    return functorCallback8;
+  }
+  else if (index == 9)
+  {
+    return functorCallback9;
+  }
+  return NULL;
 }
 
-boolean FunctorCallbacks::callbackIsAttached(const size_t index)
+bool FunctorCallbacks::remove(const Callback callback)
 {
-  if (index >= FUNCTOR_CALLBACKS_COUNT)
+  if (!callback)
   {
     return false;
   }
-  return functor_callbacks_[index].callbackIsAttached();
-}
-
-void FunctorCallbacks::callback(const size_t index)
-{
-  if (index >= FUNCTOR_CALLBACKS_COUNT)
+  bool removed = false;
+  noInterrupts();
+  if (callback == functorCallback0)
   {
-    return;
+    removed = functor_callbacks_.remove(0);
   }
-  functor_callbacks_[index].callback();
+  else if (callback == functorCallback1)
+  {
+    removed = functor_callbacks_.remove(1);
+  }
+  else if (callback == functorCallback2)
+  {
+    removed = functor_callbacks_.remove(2);
+  }
+  else if (callback == functorCallback3)
+  {
+    removed = functor_callbacks_.remove(3);
+  }
+  else if (callback == functorCallback4)
+  {
+    removed = functor_callbacks_.remove(4);
+  }
+  else if (callback == functorCallback5)
+  {
+    removed = functor_callbacks_.remove(5);
+  }
+  else if (callback == functorCallback6)
+  {
+    removed = functor_callbacks_.remove(6);
+  }
+  else if (callback == functorCallback7)
+  {
+    removed = functor_callbacks_.remove(7);
+  }
+  else if (callback == functorCallback8)
+  {
+    removed = functor_callbacks_.remove(8);
+  }
+  else if (callback == functorCallback9)
+  {
+    removed = functor_callbacks_.remove(9);
+  }
+  interrupts();
+  return removed;
 }
 
-FunctorCallbacks g_functor_callbacks;
-
-void gFunctorCallback0()
+bool FunctorCallbacks::full()
 {
-  g_functor_callbacks.callback(0);
+  return functor_callbacks_.full();
 }
 
+void FunctorCallbacks::callback(const int index)
+{
+  if (functor_callbacks_.indexHasValue(index))
+  {
+    functor_callbacks_[index].callback();
+  }
+}
+
+void FunctorCallbacks::functorCallback0()
+{
+  callback(0);
+}
+
+void FunctorCallbacks::functorCallback1()
+{
+  callback(1);
+}
+
+void FunctorCallbacks::functorCallback2()
+{
+  callback(2);
+}
+
+void FunctorCallbacks::functorCallback3()
+{
+  callback(3);
+}
+
+void FunctorCallbacks::functorCallback4()
+{
+  callback(4);
+}
+
+void FunctorCallbacks::functorCallback5()
+{
+  callback(5);
+}
+
+void FunctorCallbacks::functorCallback6()
+{
+  callback(6);
+}
+
+void FunctorCallbacks::functorCallback7()
+{
+  callback(7);
+}
+
+void FunctorCallbacks::functorCallback8()
+{
+  callback(8);
+}
+
+void FunctorCallbacks::functorCallback9()
+{
+  callback(9);
+}

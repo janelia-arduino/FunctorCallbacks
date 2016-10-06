@@ -1,6 +1,6 @@
 #include "Arduino.h"
-#include "Array.h"
 #include "Functor.h"
+#include "IndexedContainer.h"
 #include "FunctorCallbacks.h"
 
 #include "Streaming.h"
@@ -11,6 +11,8 @@ const int LED_PIN = LED_BUILTIN;
 
 int led_state = LOW;
 volatile unsigned long blink_count = 0;
+unsigned long loop_count = 0;
+Callback callback = NULL;
 
 void blinkLED()
 {
@@ -26,17 +28,37 @@ void blinkLED()
   digitalWrite(LED_PIN,led_state);
 }
 
+void newCallback()
+{
+  Serial << "New callback!" << "\n";
+}
+
+void dummyCallback()
+{
+}
 
 void setup()
 {
   pinMode(LED_PIN, OUTPUT);
 
-  g_functor_callbacks.attachCallback(0,makeFunctor((Functor0 *)0,blinkLED));
+  Serial.begin(9600);
+
+  Serial << "FunctorCallbacks::full() = " << FunctorCallbacks::full() << "\n";
+
+  // Fill up all available spots with dummy callback except one for testing
+  for (size_t i=0; i<(FUNCTOR_CALLBACKS_COUNT-1); ++i)
+  {
+    Callback dummy_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,dummyCallback));
+  }
 
   Timer1.initialize(150000);
-  Timer1.attachInterrupt(gFunctorCallback0);
+  callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,blinkLED));
+  if (callback)
+  {
+    Timer1.attachInterrupt(callback);
+  }
 
-  Serial.begin(9600);
+  Serial << "FunctorCallbacks::full() = " << FunctorCallbacks::full() << "\n";
 }
 
 void loop()
@@ -47,7 +69,39 @@ void loop()
   blink_copy = blink_count;
   interrupts();
 
-  Serial.print("blink_count = ");
-  Serial.println(blink_copy);
+  Serial << "blink_count = " << blink_copy << "\n";
+
+  Serial << "loop_count = " << loop_count << "\n";
+  if (loop_count == 10)
+  {
+    Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
+    if (new_callback)
+    {
+      Timer1.attachInterrupt(new_callback);
+    }
+    else
+    {
+      Serial << "Could not add new callback, attempting to remove old callback.\n";
+      bool removed = FunctorCallbacks::remove(callback);
+      if (removed)
+      {
+        Serial << "Old callback removed, attempting to add new callback again.\n";
+        Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
+        if (new_callback)
+        {
+          Timer1.attachInterrupt(new_callback);
+        }
+        else
+        {
+          Serial << "Failed to add new callback a second time. Giving up!\n";
+        }
+      }
+      else
+      {
+        Serial << "Could not remove old callback. Giving up!\n";
+      }
+    }
+  }
+  ++loop_count;
   delay(500);
 }
