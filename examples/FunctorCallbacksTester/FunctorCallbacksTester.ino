@@ -12,7 +12,7 @@ const int LED_PIN = LED_BUILTIN;
 int led_state = LOW;
 volatile unsigned long blink_count = 0;
 unsigned long loop_count = 0;
-Callback callback = NULL;
+FunctorCallbacks::Callback callback = NULL;
 
 void blinkLED()
 {
@@ -46,9 +46,9 @@ void setup()
   Serial << "FunctorCallbacks::full() = " << FunctorCallbacks::full() << "\n";
 
   // Fill up all available spots with dummy callback except one for testing
-  for (size_t i=0; i<(FUNCTOR_CALLBACKS_COUNT-1); ++i)
+  for (size_t i=0; i<(FunctorCallbacks::CALLBACKS_COUNT-1); ++i)
   {
-    Callback dummy_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,dummyCallback));
+    FunctorCallbacks::Callback dummy_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,dummyCallback));
   }
 
   Timer1.initialize(150000);
@@ -74,7 +74,7 @@ void loop()
   Serial << "loop_count = " << loop_count << "\n";
   if (loop_count == 10)
   {
-    Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
+    FunctorCallbacks::Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
     if (new_callback)
     {
       Timer1.attachInterrupt(new_callback);
@@ -86,7 +86,7 @@ void loop()
       if (removed)
       {
         Serial << "Old callback removed, attempting to add new callback again.\n";
-        Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
+        FunctorCallbacks::Callback new_callback = FunctorCallbacks::add(makeFunctor((Functor0 *)0,newCallback));
         if (new_callback)
         {
           Timer1.attachInterrupt(new_callback);

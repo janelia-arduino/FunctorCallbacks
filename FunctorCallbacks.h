@@ -16,10 +16,6 @@
 #include "IndexedContainer.h"
 
 
-typedef void (*Callback)();
-
-enum{FUNCTOR_CALLBACKS_COUNT=10};
-
 class FunctorCallback
 {
 public:
@@ -35,11 +31,13 @@ private:
 class FunctorCallbacks
 {
 public:
+  enum{CALLBACKS_COUNT=10};
+  typedef void (*Callback)();
   static Callback add(const Functor0 & callback);
   static bool remove(const Callback callback);
   static bool full();
 private:
-  static IndexedContainer<FunctorCallback,FUNCTOR_CALLBACKS_COUNT> functor_callbacks_;
+  static IndexedContainer<FunctorCallback,CALLBACKS_COUNT> functor_callbacks_;
   static void callback(const int index);
   static void functorCallback0();
   static void functorCallback1();

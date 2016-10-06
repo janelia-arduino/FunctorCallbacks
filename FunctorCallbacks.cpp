@@ -35,9 +35,9 @@ boolean FunctorCallback::callbackIsAttached()
   return callback_;
 }
 
-IndexedContainer<FunctorCallback,FUNCTOR_CALLBACKS_COUNT> FunctorCallbacks::functor_callbacks_;
+IndexedContainer<FunctorCallback,FunctorCallbacks::CALLBACKS_COUNT> FunctorCallbacks::functor_callbacks_;
 
-Callback FunctorCallbacks::add(const Functor0 & callback)
+FunctorCallbacks::Callback FunctorCallbacks::add(const Functor0 & callback)
 {
   if (full())
   {
