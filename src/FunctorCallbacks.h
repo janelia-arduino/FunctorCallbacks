@@ -7,13 +7,9 @@
 // ----------------------------------------------------------------------------
 #ifndef FUNCTOR_CALLBACKS_H
 #define FUNCTOR_CALLBACKS_H
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-#include "Functor.h"
-#include "IndexedContainer.h"
+#include <Arduino.h>
+#include <Functor.h>
+#include <IndexedContainer.h>
 
 
 class FunctorCallback

@@ -1,10 +1,10 @@
-#include "Arduino.h"
-#include "Functor.h"
-#include "IndexedContainer.h"
-#include "FunctorCallbacks.h"
+#include <Arduino.h>
+#include <Functor.h>
+#include <IndexedContainer.h>
+#include <FunctorCallbacks.h>
 
-#include "Streaming.h"
-#include "TimerOne.h"
+#include <Streaming.h>
+#include <TimerOne.h>
 
 
 const int LED_PIN = LED_BUILTIN;
@@ -41,7 +41,7 @@ void setup()
 {
   pinMode(LED_PIN, OUTPUT);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   Serial << "FunctorCallbacks::full() = " << FunctorCallbacks::full() << "\n";
 
