@@ -34,7 +34,7 @@ public:
   static bool full();
 private:
   static IndexedContainer<FunctorCallback,CALLBACKS_COUNT> functor_callbacks_;
-  static void callback(const int index);
+  static void callback(int index);
   static void functorCallback0();
   static void functorCallback1();
   static void functorCallback2();

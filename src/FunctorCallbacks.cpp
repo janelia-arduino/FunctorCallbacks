@@ -145,7 +145,7 @@ bool FunctorCallbacks::full()
   return functor_callbacks_.full();
 }
 
-void FunctorCallbacks::callback(const int index)
+void FunctorCallbacks::callback(int index)
 {
   if (functor_callbacks_.indexHasValue(index))
   {
